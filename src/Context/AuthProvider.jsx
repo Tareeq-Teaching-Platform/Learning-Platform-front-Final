@@ -18,8 +18,11 @@ useEffect(() => {
 
     const [loading, setLoading] = useState(true);
 
-    const login = (userData) =>{
-        setUser(userData);
+    const login = (userData, token) => {
+      setUser(userData);
+      if (token) {
+        localStorage.setItem('token', token);
+      }
     };
     
     const logout = () => {

@@ -41,26 +41,29 @@ const RegisterPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  
+  if (!validateForm()) {
+    return;
+  }
+
+  setLoading(true);
+  setError('');
+
+  try {
+    const { confirmPassword, ...registerData } = formData;
+    const response = await axios.post(`${API_BASE_URL}/auth/register/student`, registerData);
     
-    if (!validateForm()) {
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const { confirmPassword, ...registerData } = formData;
-      const response = await axios.post(`${API_BASE_URL}/auth/register/student`, registerData);
-      login(response.data.user);
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Pass both user and token
+    login(response.data.user, response.data.token);
+    
+    navigate('/');
+  } catch (err) {
+    setError(err.response?.data?.message || 'Registration failed. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const passwordStrength = () => {
     const length = formData.password.length;
