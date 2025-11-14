@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+   themes: cupcake --default;
+ }
+
+
+/* OR use this modern approach that reserves space without always showing scrollbar */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Style the search wrapper */
+.dataTables_filter {
+  margin-bottom: 1rem;
+}
+
+/* Style the search label text */
+.dataTables_filter label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
