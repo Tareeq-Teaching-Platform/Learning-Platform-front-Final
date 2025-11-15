@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { API_BASE_URL } from "../config/api";
 import axios from "axios";
@@ -9,8 +9,6 @@ import { useQuery } from "@tanstack/react-query";
 const SubjectCourses = () => {
   const { user } = useAuth();
   const { subject_id } = useParams();
-  const [courses, setCourses] = useState();
-  const [loading, setLoading] = useState(false);
   const { addToCart, isInCart, removeFromCart } = useCart();
 
   // Fetch enrolled course IDs
@@ -33,40 +31,30 @@ const SubjectCourses = () => {
       staleTime: 5 * 60 * 1000,
     });
 
-  // Create a Set for fast lookup
-  const enrolledSet = new Set(enrolledCourseIds);
-
-  const getCourses = async () => {
-    try {
-      setLoading(true);
+  // Fetch courses list (now cached!)
+  const { data: courses = [], isLoading: coursesLoading } = useQuery({
+    queryKey: ["subject-courses", subject_id],
+    queryFn: async () => {
       const response = await axios.get(`${API_BASE_URL}/courses`, {
         params: {
           subject: subject_id,
         },
       });
       console.log(response.data.data.courses);
-      setCourses(response.data.data.courses);
-    } catch (error) {
-      console.error("Error getting courses: ", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return response.data.data.courses;
+    },
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+  });
 
-  useEffect(() => {
-    getCourses();
-  }, [subject_id]);
-
-  useEffect(() => {
-    console.log("level's courses are : ", courses);
-  }, [courses]);
+  // Create a Set for fast lookup
+  const enrolledSet = new Set(enrolledCourseIds);
 
   // Helper function to check if user is enrolled in a course
   const isEnrolled = (courseId) => {
     return enrolledSet.has(courseId);
   };
 
-  if (loading) {
+  if (coursesLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <span className="loading loading-spinner loading-lg text-green-600"></span>

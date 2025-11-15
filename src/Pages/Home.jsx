@@ -42,7 +42,13 @@ const Home = () => {
     fetchTeachers()
   },[])
   
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <span className="loading loading-spinner loading-lg text-green-600"></span>
+      </div>
+    );
+  }
   
   if (isError) return <div>Error: {error.message}</div>;
   console.log(classes)
