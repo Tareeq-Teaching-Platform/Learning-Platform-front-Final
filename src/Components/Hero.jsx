@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Sparkles, BookOpen, GraduationCap, Zap, TrendingUp, Users, Award, BotIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [floatingIndex, setFloatingIndex] = useState(0);
@@ -82,13 +83,13 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="group px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2">
+              <Link to={'/classes'} className="group px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2">
                 Start Learning
                 <TrendingUp className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="px-8 py-4 bg-white text-slate-700 font-bold rounded-xl border-2 border-slate-300 hover:border-green-500 hover:text-green-600 hover:shadow-lg transition-all duration-300">
+              </Link>
+              <Link to={'/about'} className="px-8 py-4 bg-white text-slate-700 font-bold rounded-xl border-2 border-slate-300 hover:border-green-500 hover:text-green-600 hover:shadow-lg transition-all duration-300">
                 Learn More
-              </button>
+              </Link>
             </div>
 
             {/* Stats */}
