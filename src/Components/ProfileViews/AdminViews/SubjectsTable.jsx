@@ -30,9 +30,18 @@ const SubjectsTable = () => {
   // deleting a subject:
   const deleteMutation = useMutation({
     mutationFn: async (subjectId) => {
-      const response = await axios.delete(`${API_BASE_URL}/subjects/${subjectId}`);
-      return response.data;
-    },
+    const token = localStorage.getItem('token'); // or however you store your token
+    
+    const response = await axios.delete(
+      `${API_BASE_URL}/subjects/${subjectId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subjects'] });
       toast.success('Subject deleted successfully!');
